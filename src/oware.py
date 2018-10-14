@@ -21,8 +21,6 @@ def four_four_rules(player, pit, board_state):
         pit = pit + 1 % 12
 
 
-
-
 class BoardState(object):
     """
     Represents the state of a single board
@@ -33,12 +31,6 @@ class BoardState(object):
         self.score = score if score else [0, 0]
 
 
-
-
-
-class Agent(object):
-    def play_turn(self, game_state):
-
 class Game(object):
     """
     A Game object represents a match taking place between two agents, one representing north and the other representing
@@ -46,8 +38,14 @@ class Game(object):
     play their turns and handles interaction with UI components that display the Game.
     """
 
-    def __init__(self, state=None):
-        self.game_state = BoardState() if state is None else state
+    def __init__(self, agents=None, ui=None, rules=four_four_rules):
+        self.game_state = BoardState()
+        self.agents = agents
+        self.ui = ui
+        self.rules = rules
+
+    def start(self):
+        agents[0]
 
 
 
