@@ -1,3 +1,5 @@
+import random
+
 def four_four_rules(player, pit, board_state):
     """
     Play a turn of the four four rule game
@@ -29,6 +31,19 @@ class BoardState(object):
     def __init__(self, pits=None, score=None):
         self.pits = pits if pits else [4] * 12
         self.score = score if score else [0, 0]
+        self.ended = False
+
+    def clone(self):
+        """
+        Creates a clone of the game's board state
+        """
+        return BoardState(pits=self.pits[:], score=self.score[:])
+
+    def __repr__(self):
+        repr = ""
+        for pit in range(11, 5, -1):
+            repr += "(%02d) " % self.pits[pit]
+        return repr
 
 
 class Game(object):
@@ -44,8 +59,11 @@ class Game(object):
         self.ui = ui
         self.rules = rules
 
-    def start(self):
-        agents[0]
+    def run(self):
+        turn = random.randint(0, 1)
+        while not self.game_state.ended:
+            self.agents[turn].get_next_move(self.game_state.clone())
+            turn = (turn + 1) % 2
 
 
 
