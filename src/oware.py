@@ -39,10 +39,15 @@ class BoardState(object):
         """
         return BoardState(pits=self.pits[:], score=self.score[:])
 
-    def __repr__(self):
-        repr = ""
+    def __repr__(self):        
+        repr = "=" * 42 + "\n"
+        repr += "  "
         for pit in range(11, 5, -1):
-            repr += "(%02d) " % self.pits[pit]
+            repr += " (%02d) " % self.pits[pit]
+        repr += "\n(%02d)                                (%02d)\n  " % (self.score[0], self.score[1])
+        for pit in range(0, 6):
+            repr += " (%02d) " % self.pits[pit]
+        repr += "\n" + "=" * 42 + "\n"
         return repr
 
 
