@@ -1,26 +1,6 @@
+from copy import copy
+from rules import FourFour
 import random
-
-def four_four_rules(player, pit, board_state):
-    """
-    Play a turn of the four four rule game
-    :param player:
-    :param pit:
-    :param board_state:
-    :return:
-    """
-
-    if player == 'SOUTH' and pit > 5:
-        raise ValueError("Invalid pit number %d for south player. Pit number for south must be 0 through 5" % pit)
-    if player == 'NORTH' and pit < 6:
-        raise ValueError("Invalid pit number %d for north player. Pit number for north must be 6 through 11" % pit)
-    if player != 'SOUTH' and player !='NORTH':
-        raise ValueError("Player must be either north or south")
-
-    seeds_in_hand = board_state.pits[pit]
-    board_state.pits[pit] = 0
-
-    while seeds_in_hand > 0:
-        pit = pit + 1 % 12
 
 
 class BoardState(object):
@@ -33,22 +13,22 @@ class BoardState(object):
         self.score = score if score else [0, 0]
         self.ended = False
 
-    def clone(self):
+    def __copy__(self):
         """
         Creates a clone of the game's board state
         """
         return BoardState(pits=self.pits[:], score=self.score[:])
 
-    def __repr__(self):        
-        repr = "=" * 42 + "\n"
-        repr += "  "
+    def __repr__(self):
+        board_text_image = "=" * 42 + "\n"
+        board_text_image += "  "
         for pit in range(11, 5, -1):
-            repr += " (%02d) " % self.pits[pit]
-        repr += "\n(%02d)                                (%02d)\n  " % (self.score[0], self.score[1])
+            board_text_image += " (%02d) " % self.pits[pit]
+        board_text_image += "\n(%02d)                                (%02d)\n  " % (self.score[0], self.score[1])
         for pit in range(0, 6):
-            repr += " (%02d) " % self.pits[pit]
-        repr += "\n" + "=" * 42 + "\n"
-        return repr
+            board_text_image += " (%02d) " % self.pits[pit]
+        board_text_image += "\n" + "=" * 42 + "\n"
+        return board_text_image
 
 
 class Game(object):
@@ -58,17 +38,21 @@ class Game(object):
     play their turns and handles interaction with UI components that display the Game.
     """
 
-    def __init__(self, agents=None, ui=None, rules=four_four_rules):
+    def __init__(self, agents=None, ui=None, rules=None):
         self.game_state = BoardState()
         self.agents = agents
         self.ui = ui
-        self.rules = rules
+        self.rules = rules if rules else FourFour()
 
     def run(self):
+        # Holds whose turn it is 0 for south 1 for north
         turn = random.randint(0, 1)
+
         while not self.game_state.ended:
-            self.agents[turn].get_next_move(self.game_state.clone())
+            # Since every agent assumes to be playing south, ensure that the board state is appropriately oriented
+            board = copy(self.game_state)
+            if turn == 1:
+                board.flip()
+            pit = self.agents[turn].get_next_move(board)
+            self.rules.play_pit(self.game_state, 'SOUTH' if turn == 0 else 'NORTH', pit)
             turn = (turn + 1) % 2
-
-
-
