@@ -24,8 +24,13 @@ class FourFour(Rule):
         if player != 'SOUTH' and player != 'NORTH':
             raise ValueError("Player must be either north or south")
 
-        seeds_in_hand = board_state.pits[pit]
-        board_state.pits[pit] = 0
+        while True:
+            seeds_in_hand = board_state.pits[pit]
+            board_state.pits[pit] = 0
+            while seeds_in_hand > 0:
+                pit = (pit + 1) % 12
+                board_state.pits[pit] += 1
+                seeds_in_hand -= 1
 
-        while seeds_in_hand > 0:
-            pit = pit + 1 % 12
+            if board_state.pits[pit] == 1:
+                break

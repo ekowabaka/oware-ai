@@ -30,6 +30,10 @@ class BoardState(object):
         board_text_image += "\n" + "=" * 42 + "\n"
         return board_text_image
 
+    def flip(self):
+        self.score.reverse()
+        self.pits = self.pits[6:12] + self.pits[0:6]
+
 
 class Game(object):
     """
@@ -49,10 +53,18 @@ class Game(object):
         turn = random.randint(0, 1)
 
         while not self.game_state.ended:
-            # Since every agent assumes to be playing south, ensure that the board state is appropriately oriented
             board = copy(self.game_state)
+
+            # Since every agent assumes to be playing south, ensure the board state is appropriately oriented before
+            # calling the agent
             if turn == 1:
                 board.flip()
+
             pit = self.agents[turn].get_next_move(board)
+
+            if turn == 1:
+                pit += 6
+
             self.rules.play_pit(self.game_state, 'SOUTH' if turn == 0 else 'NORTH', pit)
+            print(self.game_state)
             turn = (turn + 1) % 2
