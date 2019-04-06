@@ -2,6 +2,10 @@ from copy import copy
 from rules import FourFour
 import random
 
+SOUTH_PLAYER = 0
+
+NORTH_PLAYER = 1
+
 
 class BoardState(object):
     """
@@ -57,7 +61,7 @@ class Game(object):
 
             # Since every agent assumes to be playing south, ensure the board state is appropriately oriented before
             # calling the agent
-            if turn == 1:
+            if turn == NORTH_PLAYER:
                 board.flip()
 
             pit = self.agents[turn].get_next_move(board)
@@ -65,6 +69,6 @@ class Game(object):
             if turn == 1:
                 pit += 6
 
-            self.rules.play_pit(self.game_state, 'SOUTH' if turn == 0 else 'NORTH', pit)
+            self.rules.play_pit(self.game_state, turn, pit)
             print(self.game_state)
             turn = (turn + 1) % 2
