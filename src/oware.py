@@ -55,7 +55,7 @@ class Game(object):
         while not self.game_state.ended:
             board = copy(self.game_state)
 
-            # Since every agent assumes to be playing south, ensure the board state is appropriately oriented before
+            # Every agent assumes to be playing south : ensure the board state is appropriately oriented before
             # calling the agent
             if turn == 1:
                 board.flip()
