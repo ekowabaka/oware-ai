@@ -8,6 +8,11 @@ class RandomAgent(object):
     """
 
     def get_next_move(self, board_state):
+        """
+        Return the next move which would be randomly selected
+        :param board_state:
+        :return:
+        """
         non_empty_pits = list()
         for i in range(6):
             if board_state.pits[i] > 0:

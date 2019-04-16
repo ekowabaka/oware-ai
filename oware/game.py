@@ -1,5 +1,5 @@
 from copy import copy
-from rules import FourFour
+from oware.rules import FourFour
 import random
 
 SOUTH_PLAYER = 0
@@ -24,6 +24,10 @@ class BoardState(object):
         return BoardState(pits=self.pits[:], score=self.score[:])
 
     def __repr__(self):
+        """
+        String representation of the board
+        :return:
+        """
         board_text_image = "=" * 42 + "\n"
         board_text_image += "  "
         for pit in range(11, 5, -1):
