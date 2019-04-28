@@ -1,7 +1,16 @@
 import random
 
 
-class RandomAgent(object):
+class Agent(object):
+
+    def __init__(self):
+        self.rules = None
+
+    def get_next_move(self, board_state):
+        raise NotImplementedError("Please implement the get next move for your agent")
+
+
+class RandomAgent(Agent):
     """
     A random agent for testing that just plays any non empty pit. This agent just plays dummy without any intention to
     win.

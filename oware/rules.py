@@ -1,7 +1,7 @@
 import oware
 
 
-class Rule(object):
+class Rules(object):
     """
     Abstract class for rules?
     """
@@ -9,7 +9,7 @@ class Rule(object):
         raise NotImplementedError("The selected rule is not complete. Ensure the update() method is implemented")
 
 
-class FourFour(Rule):
+class AyoRules(Rules):
 
     def play_pit(self, board_state, player, pit):
         """
@@ -21,11 +21,11 @@ class FourFour(Rule):
         """
 
         # Validate the move
-        if player == oware.SOUTH_PLAYER and pit > 5:
+        if player == oware.game.SOUTH_PLAYER and pit > 5:
             raise ValueError("Invalid pit number %d for south player. Pit number for south must be 0 through 5" % pit)
-        if player == oware.NORTH_PLAYER and pit < 6:
+        if player == oware.game.NORTH_PLAYER and pit < 6:
             raise ValueError("Invalid pit number %d for north player. Pit number for north must be 6 through 11" % pit)
-        if player != oware.SOUTH_PLAYER and player != oware.NORTH_PLAYER:
+        if player != oware.game.SOUTH_PLAYER and player != oware.game.NORTH_PLAYER:
             raise ValueError("Player must be either north or south")
         if board_state.pits[pit] == 0:
             raise ValueError("Cannot play an empty pit")
@@ -41,9 +41,9 @@ class FourFour(Rule):
                 if board_state.pits[pit] == 4:
                     board_state.pits[pit] = 0
                     if pit < 6:
-                        board_state.score[oware.SOUTH_PLAYER] += 4
+                        board_state.score[oware.game.SOUTH_PLAYER] += 4
                     else:
-                        board_state.score[oware.NORTH_PLAYER] += 4
+                        board_state.score[oware.game.NORTH_PLAYER] += 4
 
                 seeds_in_hand -= 1
 

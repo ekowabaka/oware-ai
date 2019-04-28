@@ -1,5 +1,5 @@
 from copy import copy
-from oware.rules import FourFour
+from oware.rules import AyoRules
 import random
 
 SOUTH_PLAYER = 0
@@ -54,7 +54,9 @@ class Game(object):
         self.game_state = BoardState()
         self.agents = agents
         self.ui = ui
-        self.rules = rules if rules else FourFour()
+        self.rules = rules if rules else AyoRules()
+        for agent in self.agents:
+            agent.rules = self.rules
 
     def run(self):
         # Holds whose turn it is 0 for south 1 for north
