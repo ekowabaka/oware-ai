@@ -57,3 +57,5 @@ class AyoRules(Rules):
                 board_state.score[player] += 4
                 board_state.pits[pit] = 0
                 break
+
+    def 
