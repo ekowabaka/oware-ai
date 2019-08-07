@@ -3,9 +3,7 @@ from oware.rules import AyoRules
 import random
 
 SOUTH_PLAYER = 0
-
 NORTH_PLAYER = 1
-
 
 class BoardState(object):
     """
@@ -61,6 +59,7 @@ class Game(object):
     def run(self):
         # Holds whose turn it is 0 for south 1 for north
         turn = random.randint(0, 1)
+        print(self.game_state)
 
         while not self.game_state.ended:
             board = copy(self.game_state)
@@ -75,6 +74,9 @@ class Game(object):
             if turn == 1:
                 pit += 6
 
+            print("Player ", turn, " plays pit ", pit)
+
             self.rules.play_pit(self.game_state, turn, pit)
             print(self.game_state)
             turn = (turn + 1) % 2
+        

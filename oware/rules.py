@@ -1,12 +1,21 @@
-import oware
-
+from copy import copy
+from oware import game
 
 class Rules(object):
+
+    def is_valid(self, state, player, pit):
+        raise NotImplementedError("")
+
+    def get_next_state(self, state, player, pit):
+        new_state = copy(state)
+        self.play_pit(new_state, player, pit)
+        return new_state
+
     """
     Abstract class for rules?
     """
     def play_pit(self, board_state, player, pit):
-        raise NotImplementedError("The selected rule is not complete. Ensure the update() method is implemented")
+        raise NotImplementedError("The selected rule is not completely implemented. Ensure the update() method exists.")
 
 
 class AyoRules(Rules):
@@ -21,11 +30,11 @@ class AyoRules(Rules):
         """
 
         # Validate the move
-        if player == oware.game.SOUTH_PLAYER and pit > 5:
+        if player == game.SOUTH_PLAYER and pit > 5:
             raise ValueError("Invalid pit number %d for south player. Pit number for south must be 0 through 5" % pit)
-        if player == oware.game.NORTH_PLAYER and pit < 6:
+        if player == game.NORTH_PLAYER and pit < 6:
             raise ValueError("Invalid pit number %d for north player. Pit number for north must be 6 through 11" % pit)
-        if player != oware.game.SOUTH_PLAYER and player != oware.game.NORTH_PLAYER:
+        if player != game.SOUTH_PLAYER and player != game.NORTH_PLAYER:
             raise ValueError("Player must be either north or south")
         if board_state.pits[pit] == 0:
             raise ValueError("Cannot play an empty pit")
@@ -41,9 +50,9 @@ class AyoRules(Rules):
                 if board_state.pits[pit] == 4:
                     board_state.pits[pit] = 0
                     if pit < 6:
-                        board_state.score[oware.game.SOUTH_PLAYER] += 4
+                        board_state.score[game.SOUTH_PLAYER] += 4
                     else:
-                        board_state.score[oware.game.NORTH_PLAYER] += 4
+                        board_state.score[game.NORTH_PLAYER] += 4
 
                 seeds_in_hand -= 1
 
@@ -57,5 +66,3 @@ class AyoRules(Rules):
                 board_state.score[player] += 4
                 board_state.pits[pit] = 0
                 break
-
-    def 
