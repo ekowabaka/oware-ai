@@ -49,7 +49,6 @@ class Game(object):
     """
 
     def __init__(self, agents=None, ui=None, rules=None):
-        self.game_state = BoardState()
         self.agents = agents
         self.ui = ui
         self.rules = rules if rules else AyoRules()
@@ -59,10 +58,10 @@ class Game(object):
     def run(self):
         # Holds whose turn it is 0 for south 1 for north
         turn = random.randint(0, 1)
-        print(self.game_state)
+        game_state = BoardState()
 
-        while not self.game_state.ended:
-            board = copy(self.game_state)
+        while not game_state.ended:
+            board = copy(game_state)
 
             # Every agent assumes to be playing south : ensure the board state is appropriately oriented before
             # calling the agent
@@ -74,9 +73,20 @@ class Game(object):
             if turn == 1:
                 pit += 6
 
-            print("Player ", turn, " plays pit ", pit)
-
-            self.rules.play_pit(self.game_state, turn, pit)
-            print(self.game_state)
+            self.rules.play_pit(game_state, turn, pit)
             turn = (turn + 1) % 2
+        
+        return game_state
+
+    def evaluate(self, runs=10):
+        wins = [0, 0]
+        for i in range(runs):
+            print("Playing round ", i + 1)
+            state = self.run()
+            if state.score[0] > state.score[1]:
+                wins[0] += 1
+            else:
+                wins[1] += 1
+        print(wins)
+
         

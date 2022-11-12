@@ -26,4 +26,5 @@ class RandomAgent(Agent):
         for i in range(6):
             if board_state.pits[i] > 0:
                 non_empty_pits.append(i)
-        return random.choice(non_empty_pits)
+        if non_empty_pits:
+            return random.choice(non_empty_pits)

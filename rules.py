@@ -39,6 +39,8 @@ class AyoRules(Rules):
         if board_state.pits[pit] == 0:
             raise ValueError("Cannot play an empty pit")
 
+        rounds = 0
+
         # Perform the entire distribution dance and update scores
         while True:
             seeds_in_hand = board_state.pits[pit]
@@ -65,4 +67,8 @@ class AyoRules(Rules):
             if board_state.pits[pit] == 4:
                 board_state.score[player] += 4
                 board_state.pits[pit] = 0
+                break
+
+            rounds += 1
+            if rounds > 30:
                 break
